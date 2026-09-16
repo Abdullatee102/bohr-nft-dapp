@@ -1,0 +1,15 @@
+{
+  "name": "web3-nft-dapps-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production Web3 NFT Minting dApp on Bohr Testnet",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix frontend run start",
+    "lint": "npm --prefix frontend run lint",
+    "test:contracts": "cd smart-contracts && forge test -vvv",
+    "build:contracts": "cd smart-contracts && forge build"
+  }
+}
+

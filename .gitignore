@@ -1,0 +1,29 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Testing and build outputs
+out
+cache
+coverage
+
+# Next.js
+.next/
+dist/
+
+# Environment files with sensitive secrets
+.env
+.env*.local
+*.pem
+
+# Foundry broadcast and logs
+broadcast/
+foundry-pp/
+
+# IDE & OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
