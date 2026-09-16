@@ -14,7 +14,7 @@ const queryClient = new QueryClient();
 const metadata = {
   name: 'Bohr NFT Minting dApp',
   description: 'Production NFT Minting Platform on Bohr Testnet (Chain ID 968)',
-  url: 'http://localhost:3000',
+  url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
   icons: ['https://scan.bohr.life/favicon.ico'],
 };
 
