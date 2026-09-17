@@ -55,3 +55,20 @@ forge script script/MyNFT.s.sol:MyNFTScript \
 ```
 
 _(Note: `--legacy` may be required if the EVM node expects legacy transactions instead of EIP-1559)_
+
+### Existing deployment metadata
+
+For the deployed contract, the owner must update the base URI once so batch mints and
+tokens minted without an explicit URI resolve to the hosted BOT Genesis metadata:
+
+```bash
+cast send <CONTRACT_ADDRESS> "setBaseURI(string)" \
+   "https://bohr-nft-dapp-lk9w.vercel.app/metadata/" \
+   --rpc-url https://rpc.bohr.life \
+   --private-key "$PRIVATE_KEY" \
+   --legacy
+```
+
+Single mints from the frontend include their full metadata URI directly. The metadata
+endpoint returns the collection JSON and the official card image at
+`/bot-genesis-card.svg`.

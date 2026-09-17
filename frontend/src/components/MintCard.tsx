@@ -15,6 +15,7 @@ import {
   DEFAULT_NFT_CONTRACT_ADDRESS,
   MY_NFT_ABI,
   BOHR_EXPLORER_URL,
+  NFT_METADATA_BASE_URI,
 } from '@/config/contracts';
 import {
   Sparkles,
@@ -131,7 +132,7 @@ export function MintCard() {
           address: DEFAULT_NFT_CONTRACT_ADDRESS,
           abi: MY_NFT_ABI,
           functionName: 'mint',
-          args: [address, `ipfs://bohr-nft/${Number(totalMinted || 0) + 1}.json`],
+          args: [address, `${NFT_METADATA_BASE_URI}${Number(totalMinted || 0) + 1}`],
           value: totalCostWei,
           chainId: bohrTestnet.id,
         });

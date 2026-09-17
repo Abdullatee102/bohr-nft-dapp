@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" role="img" aria-labelledby="title desc">
+  <title id="title">BOT Genesis NFT</title>
+  <desc id="desc">Dark green and black BOT Genesis card graphic</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071b16"/>
+      <stop offset="0.55" stop-color="#0b3025"/>
+      <stop offset="1" stop-color="#020706"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5ee7a1"/>
+      <stop offset="1" stop-color="#0b8f5a"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="1200" rx="72" fill="#020706"/>
+  <rect x="28" y="28" width="1144" height="1144" rx="52" fill="url(#bg)" stroke="#2bd47d" stroke-opacity=".35" stroke-width="3"/>
+  <path d="M72 330h1056M72 870h1056M330 72v1056M870 72v1056" stroke="#69e5a2" stroke-opacity=".08"/>
+  <circle cx="600" cy="560" r="246" fill="#18a866" fill-opacity=".12" filter="url(#glow)"/>
+  <circle cx="600" cy="560" r="194" fill="none" stroke="url(#line)" stroke-width="5"/>
+  <circle cx="600" cy="560" r="166" fill="#020706" stroke="#b4ffd2" stroke-opacity=".25" stroke-width="2"/>
+  <path d="M500 620V480l100-58 100 58v140l-100 58-100-58Z" fill="#0d5639" stroke="#5ee7a1" stroke-width="6"/>
+  <path d="m535 575 65 38 65-38v-63l-65-37-65 37v63Z" fill="#071b16" stroke="#b4ffd2" stroke-width="4"/>
+  <text x="600" y="610" text-anchor="middle" fill="#d9ffe6" font-family="Arial, Helvetica, sans-serif" font-size="84" font-weight="900" letter-spacing="10">BOT</text>
+  <text x="92" y="132" fill="#b4ffd2" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" letter-spacing="8">BOHR NETWORK</text>
+  <text x="92" y="1050" fill="#d9ffe6" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800" letter-spacing="3">GENESIS</text>
+  <text x="92" y="1100" fill="#69e5a2" font-family="Arial, Helvetica, sans-serif" font-size="24" letter-spacing="6">FOUNDING COLLECTION</text>
+  <text x="1108" y="1054" text-anchor="end" fill="#69e5a2" font-family="monospace" font-size="28">ERC-721</text>
+</svg>

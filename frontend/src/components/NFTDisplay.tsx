@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { useAccount, useReadContract } from 'wagmi';
 import { bohrTestnet } from '@/config/chains';
 import { DEFAULT_NFT_CONTRACT_ADDRESS, MY_NFT_ABI, BOHR_EXPLORER_URL } from '@/config/contracts';
@@ -29,6 +30,13 @@ export function NFTDisplay() {
       {/* NFT Artwork Preview */}
       <div>
         <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-gradient-to-br from-emerald-900/40 via-neutral-950 to-cyan-950/40 border border-white/10 p-6 flex flex-col justify-between group">
+          <Image
+            src="/bot-genesis-card.svg"
+            alt="BOT Genesis official card"
+            fill
+            priority
+            className="object-cover opacity-80"
+          />
           <div className="flex items-center justify-between z-10">
             <span className="px-3 py-1 rounded-full bg-black/60 border border-emerald-500/40 text-[11px] font-mono font-medium text-emerald-400 backdrop-blur-md">
               Edition #001
@@ -39,7 +47,7 @@ export function NFTDisplay() {
           </div>
 
           {/* Central Artwork Emblem */}
-          <div className="my-auto flex flex-col items-center text-center py-8">
+          <div className="relative z-10 my-auto flex flex-col items-center text-center py-8">
             <div className="relative w-28 h-28 flex items-center justify-center">
               <div className="absolute inset-0 rounded-full bg-emerald-500/20 blur-xl animate-pulse" />
               <div className="w-24 h-24 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-500 p-[2px] shadow-2xl">

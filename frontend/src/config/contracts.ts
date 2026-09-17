@@ -35,3 +35,7 @@ export const BOHR_RPC_URL =
 export const BOHR_EXPLORER_URL =
   process.env.NEXT_PUBLIC_EXPLORER_URL || 'https://scan.bohr.life';
 
+export const NFT_METADATA_BASE_URI =
+  process.env.NEXT_PUBLIC_METADATA_BASE_URI ||
+  'https://bohr-nft-dapp-lk9w.vercel.app/metadata/';
+
