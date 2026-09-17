@@ -34,7 +34,10 @@ contract MyNFTScript is Script {
 
         string memory name = vm.envOr("NFT_NAME", string("Bohr Genesis NFT"));
         string memory symbol = vm.envOr("NFT_SYMBOL", string(unicode"BG搏"));
-        string memory baseURI = vm.envOr("NFT_BASE_URI", string("https://api.bohr.life/metadata/"));
+        string memory baseURI = vm.envOr(
+            "NFT_BASE_URI",
+            string("https://bohr-nft-dapp-lk9w.vercel.app/metadata/")
+        );
 
         if (deployerPrivateKey != 0) {
             vm.startBroadcast(deployerPrivateKey);
