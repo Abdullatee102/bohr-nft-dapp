@@ -4,24 +4,78 @@ type MetadataRouteContext = {
   params: Promise<{ tokenId: string }>;
 };
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request, { params }: MetadataRouteContext) {
   const { tokenId } = await params;
 
-  if (!/^\d+$/.test(tokenId)) {
-    return NextResponse.json({ error: 'Invalid token ID' }, { status: 400 });
+  // Support both "1" and "1.json"
+  const cleanId = (tokenId || '').replace(/\.json$/i, '').trim();
+
+  if (!/^\d+$/.test(cleanId) || BigInt(cleanId) === BigInt(0)) {
+    return NextResponse.json(
+      { error: 'Invalid token ID. Must be a positive integer.' },
+      {
+        status: 400,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   }
 
-  const image = new URL('/bot-genesis-card.svg', request.url).toString();
+  // Derive origin dynamically from the incoming request so both localhost and production work
+  const forwardedHost = request.headers.get('x-forwarded-host');
+  const host = forwardedHost || request.headers.get('host');
+  const forwardedProto = request.headers.get('x-forwarded-proto');
 
-  return NextResponse.json({
-    name: `BOT Genesis #${tokenId}`,
+  let baseUrl = '';
+  if (host) {
+    const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
+    const proto = isLocal ? 'http' : (forwardedProto || 'https');
+    baseUrl = `${proto}://${host}`;
+  } else if (process.env.NEXT_PUBLIC_APP_URL) {
+    baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+  } else {
+    baseUrl = 'https://bohr-nft-dapp-lk9w.vercel.app';
+  }
+
+  baseUrl = baseUrl.replace(/\/+$/, '');
+  const imageUrl = `${baseUrl}/bot-genesis-card.svg`;
+
+  const metadata = {
+    name: `BOT Genesis #${cleanId}`,
     description: 'The official BOT Genesis NFT from the Bohr Network.',
-    image,
+    image: imageUrl,
     external_url: 'https://bohr.life',
     attributes: [
       { trait_type: 'Collection', value: 'BOT Genesis' },
       { trait_type: 'Network', value: 'Bohr Testnet' },
+      { trait_type: 'Chain ID', value: 968 },
       { trait_type: 'Token Standard', value: 'ERC-721' },
+      { trait_type: 'Token ID', value: Number(cleanId) },
     ],
+  };
+
+  return NextResponse.json(metadata, {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Cache-Control': 'public, max-age=3600, s-maxage=86400',
+    },
+  });
+}
+
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
   });
 }

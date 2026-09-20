@@ -39,3 +39,46 @@ export const NFT_METADATA_BASE_URI =
   process.env.NEXT_PUBLIC_METADATA_BASE_URI ||
   'https://bohr-nft-dapp-lk9w.vercel.app/metadata/';
 
+/**
+ * Resolves any tokenURI returned by the contract to a fetchable HTTP metadata URL.
+ * Handles baseURI concatenation, IPFS URIs, and legacy placeholder URIs.
+ */
+export function resolveMetadataUrl(uri?: string, tokenId?: number | bigint | string): string {
+  const fallbackId = tokenId ? String(tokenId) : '1';
+
+  if (!uri || uri.trim() === '') {
+    return `${NFT_METADATA_BASE_URI.replace(/\/+$/, '')}/${fallbackId}`;
+  }
+
+  const trimmed = uri.trim();
+
+  // Legacy placeholder from initial minting trials: ipfs://bohr-nft/{id}.json
+  if (trimmed.startsWith('ipfs://bohr-nft/')) {
+    const id = trimmed.replace('ipfs://bohr-nft/', '').replace(/\.json$/i, '');
+    return `${NFT_METADATA_BASE_URI.replace(/\/+$/, '')}/${id || fallbackId}`;
+  }
+
+  // Standard IPFS gateway conversion
+  if (trimmed.startsWith('ipfs://')) {
+    return `https://ipfs.io/ipfs/${trimmed.replace('ipfs://', '')}`;
+  }
+
+  return trimmed;
+}
+
+/**
+ * Resolves an image URL extracted from metadata JSON to an absolute or root-relative path.
+ */
+export function resolveImageUrl(imageUrl?: string): string {
+  if (!imageUrl || imageUrl.trim() === '') {
+    return '/bot-genesis-card.svg';
+  }
+
+  const trimmed = imageUrl.trim();
+
+  if (trimmed.startsWith('ipfs://')) {
+    return `https://ipfs.io/ipfs/${trimmed.replace('ipfs://', '')}`;
+  }
+
+  return trimmed;
+}

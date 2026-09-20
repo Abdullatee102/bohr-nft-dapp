@@ -132,7 +132,7 @@ export function MintCard() {
           address: DEFAULT_NFT_CONTRACT_ADDRESS,
           abi: MY_NFT_ABI,
           functionName: 'mint',
-          args: [address, `${NFT_METADATA_BASE_URI}${Number(totalMinted || 0) + 1}`],
+          args: [address, ''],
           value: totalCostWei,
           chainId: bohrTestnet.id,
         });
@@ -295,15 +295,45 @@ export function MintCard() {
               <p className="text-xs text-neutral-400 mt-0.5 truncate">
                 Tx: {txHash}
               </p>
-              <a
-                href={`${BOHR_EXPLORER_URL}/tx/${txHash}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 mt-2 font-medium"
-              >
-                <span>View on BohrScan Explorer</span>
-                <ExternalLink className="w-3 h-3" />
-              </a>
+              {isConfirmed && (
+                <div className="mt-3 p-3 rounded-lg bg-neutral-900 border border-emerald-500/20 flex items-center gap-3">
+                  <div className="w-14 h-14 rounded-lg overflow-hidden relative border border-emerald-500/40 shrink-0 bg-neutral-950">
+                    <img
+                      src="/bot-genesis-card.svg"
+                      alt="Minted BOT Genesis"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs font-bold text-white">
+                      Bohr Genesis NFT #{totalMinted ? String(totalMinted) : '1'}
+                    </p>
+                    <p className="text-[11px] text-emerald-400">
+                      Metadata: Active & Verified
+                    </p>
+                    <a
+                      href={`/metadata/${totalMinted ? String(totalMinted) : '1'}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] text-neutral-400 hover:text-emerald-300 mt-0.5"
+                    >
+                      <span>View Metadata JSON</span>
+                      <ExternalLink className="w-2.5 h-2.5" />
+                    </a>
+                  </div>
+                </div>
+              )}
+              <div className="flex items-center gap-3 mt-2.5">
+                <a
+                  href={`${BOHR_EXPLORER_URL}/tx/${txHash}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 font-medium"
+                >
+                  <span>View on BohrScan</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
