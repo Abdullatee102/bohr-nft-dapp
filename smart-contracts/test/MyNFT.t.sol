@@ -171,4 +171,51 @@ contract MyNFTTest is Test {
         nft.mint{value: 0.01 ether}(alice, "");
         assertEq(nft.tokenURI(1), string.concat(newURI, "1"));
     }
+
+    function test_TransferFrom_Success() public {
+        vm.prank(alice);
+        uint256 tokenId = nft.mint{value: 0.01 ether}(alice, "");
+
+        assertEq(nft.ownerOf(tokenId), alice);
+        assertEq(nft.balanceOf(alice), 1);
+        assertEq(nft.balanceOf(bob), 0);
+
+        // Alice transfers the NFT directly to Bob
+        vm.prank(alice);
+        nft.transferFrom(alice, bob, tokenId);
+
+        assertEq(nft.ownerOf(tokenId), bob);
+        assertEq(nft.balanceOf(alice), 0);
+        assertEq(nft.balanceOf(bob), 1);
+    }
+
+    function test_SafeTransferFrom_Success() public {
+        vm.prank(alice);
+        uint256 tokenId = nft.mint{value: 0.01 ether}(alice, "");
+
+        // Alice safely transfers to Bob
+        vm.prank(alice);
+        nft.safeTransferFrom(alice, bob, tokenId);
+
+        assertEq(nft.ownerOf(tokenId), bob);
+        assertEq(nft.balanceOf(alice), 0);
+        assertEq(nft.balanceOf(bob), 1);
+    }
+
+    function test_ApproveAndTransfer_Success() public {
+        vm.prank(alice);
+        uint256 tokenId = nft.mint{value: 0.01 ether}(alice, "");
+
+        // Alice approves Bob or a marketplace operator
+        vm.prank(alice);
+        nft.approve(bob, tokenId);
+        assertEq(nft.getApproved(tokenId), bob);
+
+        // Bob transfers on Alice's behalf
+        vm.prank(bob);
+        nft.transferFrom(alice, bob, tokenId);
+
+        assertEq(nft.ownerOf(tokenId), bob);
+        assertEq(nft.getApproved(tokenId), address(0));
+    }
 }
