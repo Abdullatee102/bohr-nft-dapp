@@ -42,7 +42,9 @@ export async function GET(request: Request, { params }: MetadataRouteContext) {
   }
 
   baseUrl = baseUrl.replace(/\/+$/, '');
-  const imageUrl = `${baseUrl}/bot-genesis-card.svg`;
+  
+  // PNG is universally supported across MetaMask, Coinbase Wallet, and all web explorers
+  const imageUrl = `${baseUrl}/bot-genesis-card.png`;
 
   const metadata = {
     name: `BOT Genesis #${cleanId}`,
