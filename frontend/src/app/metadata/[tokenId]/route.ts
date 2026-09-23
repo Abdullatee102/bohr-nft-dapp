@@ -6,15 +6,20 @@ type MetadataRouteContext = {
 
 export const dynamic = 'force-dynamic';
 
-export async function GET(request: Request, { params }: MetadataRouteContext) {
+export async function GET(
+  request: Request,
+  { params }: MetadataRouteContext
+) {
   const { tokenId } = await params;
 
-  // Support both "1" and "1.json"
+  // Support both /metadata/1 and /metadata/1.json
   const cleanId = (tokenId || '').replace(/\.json$/i, '').trim();
 
-  if (!/^\d+$/.test(cleanId) || BigInt(cleanId) === BigInt(0)) {
-    return NextResponse.json(
-      { error: 'Invalid token ID. Must be a positive integer.' },
+  // Token IDs start from 1.
+if (!/^\d+$/.test(cleanId) || BigInt(cleanId) === BigInt(0)) {    return NextResponse.json(
+      {
+        error: 'Invalid token ID. Must be a positive integer.',
+      },
       {
         status: 400,
         headers: {
@@ -25,38 +30,77 @@ export async function GET(request: Request, { params }: MetadataRouteContext) {
     );
   }
 
-  // Derive origin dynamically from the incoming request so both localhost and production work
+  /**
+   * Derive the application origin from the incoming request.
+   *
+   * This allows the metadata route to work on:
+   * - localhost
+   * - Vercel production
+   * - Vercel preview deployments
+   */
   const forwardedHost = request.headers.get('x-forwarded-host');
   const host = forwardedHost || request.headers.get('host');
+
   const forwardedProto = request.headers.get('x-forwarded-proto');
 
   let baseUrl = '';
+
   if (host) {
-    const isLocal = host.includes('localhost') || host.includes('127.0.0.1');
-    const proto = isLocal ? 'http' : (forwardedProto || 'https');
-    baseUrl = `${proto}://${host}`;
+    const isLocal =
+      host.includes('localhost') || host.includes('127.0.0.1');
+
+    const protocol = isLocal
+      ? 'http'
+      : forwardedProto || 'https';
+
+    baseUrl = `${protocol}://${host}`;
   } else if (process.env.NEXT_PUBLIC_APP_URL) {
     baseUrl = process.env.NEXT_PUBLIC_APP_URL;
   } else {
     baseUrl = 'https://bohr-nft-dapp-lk9w.vercel.app';
   }
 
+  // Remove trailing slashes.
   baseUrl = baseUrl.replace(/\/+$/, '');
-  
-  // PNG is universally supported across MetaMask, Coinbase Wallet, and all web explorers
+
+  /**
+   * Public image stored in /public.
+   *
+   * Therefore:
+   * /public/bot-genesis-card.png
+   * becomes:
+   * https://your-domain.com/bot-genesis-card.png
+   */
   const imageUrl = `${baseUrl}/bot-genesis-card.png`;
 
   const metadata = {
     name: `BOT Genesis #${cleanId}`,
-    description: 'The official BOT Genesis NFT from the Bohr Network.',
+    description:
+      'The official BOT Genesis NFT from the Bohr Network.',
     image: imageUrl,
     external_url: 'https://bohr.life',
+
     attributes: [
-      { trait_type: 'Collection', value: 'BOT Genesis' },
-      { trait_type: 'Network', value: 'Bohr Testnet' },
-      { trait_type: 'Chain ID', value: 968 },
-      { trait_type: 'Token Standard', value: 'ERC-721' },
-      { trait_type: 'Token ID', value: Number(cleanId) },
+      {
+        trait_type: 'Collection',
+        value: 'BOT Genesis',
+      },
+      {
+        trait_type: 'Network',
+        value: 'Bohr Testnet',
+      },
+      {
+        trait_type: 'Chain ID',
+        value: 968,
+      },
+      {
+        trait_type: 'Token Standard',
+        value: 'ERC-721',
+      },
+      {
+        trait_type: 'Token ID',
+        value: Number(cleanId),
+      },
     ],
   };
 
