@@ -16,8 +16,8 @@ contract MyNFTTest is Test {
     address public bob = address(0x2222);
 
     string constant NAME = "Bohr Genesis NFT";
-    string constant SYMBOL = unicode"BG搏";
-    string constant BASE_URI = "https://api.bohr.life/metadata/";
+    string constant SYMBOL = "BOTNFT";
+    string constant BASE_URI = "https://bohr-nft-dapp-iir5.vercel.app/metadata/";
 
     event NFTMinted(address indexed recipient, uint256 indexed tokenId, string tokenURI);
     event MintPriceUpdated(uint256 oldPrice, uint256 newPrice);

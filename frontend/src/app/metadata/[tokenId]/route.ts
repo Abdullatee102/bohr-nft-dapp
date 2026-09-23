@@ -57,7 +57,7 @@ if (!/^\d+$/.test(cleanId) || BigInt(cleanId) === BigInt(0)) {    return NextRes
   } else if (process.env.NEXT_PUBLIC_APP_URL) {
     baseUrl = process.env.NEXT_PUBLIC_APP_URL;
   } else {
-    baseUrl = 'https://bohr-nft-dapp-lk9w.vercel.app';
+    baseUrl = 'https://bohr-nft-dapp-iir5.vercel.app';
   }
 
   // Remove trailing slashes.

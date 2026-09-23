@@ -27,7 +27,7 @@ export const MY_NFT_ABI = parseAbi([
 // Deployed MyNFT Contract Address on Bohr Testnet
 export const DEFAULT_NFT_CONTRACT_ADDRESS: `0x${string}` =
   (process.env.NEXT_PUBLIC_NFT_CONTRACT_ADDRESS as `0x${string}`) ||
-  '0x59540a9B86c2bFB4F2591c840A6377484200d680';
+  '0xf4F29c4e097E1f8eF2aDc14A4720274425152017';
 
 export const BOHR_RPC_URL =
   process.env.NEXT_PUBLIC_RPC_URL ||
@@ -39,7 +39,7 @@ export const BOHR_EXPLORER_URL =
 
 export const NFT_METADATA_BASE_URI =
   process.env.NEXT_PUBLIC_METADATA_BASE_URI ||
-  'https://bohr-nft-dapp-lk9w.vercel.app/metadata/';
+  'https://bohr-nft-dapp-iir5.vercel.app/metadata/';
 
 /**
  * Resolves any tokenURI returned by the contract

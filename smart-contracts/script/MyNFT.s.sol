@@ -19,12 +19,17 @@ contract MyNFTScript is Script {
         uint256 deployerPrivateKey;
         address deployer;
 
-        // Try reading PRIVATE_KEY from environment
+        // Try reading PRIVATE_KEY from environment (supports 0x prefix or raw 64-char hex)
         try vm.envUint("PRIVATE_KEY") returns (uint256 pk) {
             deployerPrivateKey = pk;
             deployer = vm.addr(pk);
         } catch {
-            deployer = msg.sender;
+            try vm.envBytes32("PRIVATE_KEY") returns (bytes32 pk32) {
+                deployerPrivateKey = uint256(pk32);
+                deployer = vm.addr(deployerPrivateKey);
+            } catch {
+                deployer = msg.sender;
+            }
         }
 
         console.log("----------------------------------------------");
@@ -33,10 +38,10 @@ contract MyNFTScript is Script {
         console.log("Deployer Balance (BOT):", deployer.balance);
 
         string memory name = vm.envOr("NFT_NAME", string("Bohr Genesis NFT"));
-        string memory symbol = vm.envOr("NFT_SYMBOL", string(unicode"BG搏"));
+        string memory symbol = vm.envOr("NFT_SYMBOL", string("BOTNFT"));
         string memory baseURI = vm.envOr(
             "NFT_BASE_URI",
-            string("https://bohr-nft-dapp-lk9w.vercel.app/metadata/")
+            string("https://bohr-nft-dapp-iir5.vercel.app/metadata/")
         );
 
         if (deployerPrivateKey != 0) {
